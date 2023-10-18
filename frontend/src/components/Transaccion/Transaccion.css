@@ -1,0 +1,15 @@
+body.light .elementTransactions {
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+}
+
+body.dark .elementTransactions {
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+}
+
+.footerTransaction {
+  display: flex;
+  justify-content: center;
+  text-transform: capitalize;
+}

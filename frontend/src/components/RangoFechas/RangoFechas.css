@@ -1,0 +1,54 @@
+.date-range-picker {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
+.date-range-picker button {
+  width: 100%;
+  max-width: 100px;
+  margin: auto;
+}
+.divFechas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s;
+}
+.divFechas.open {
+  height: 150px;
+}
+.label-fecha {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputFecha {
+  border-radius: 0.3rem;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  position: relative;
+  outline: none;
+}
+.inputFecha::-webkit-calendar-picker-indicator {
+  position: absolute;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.inputFecha::before {
+  content: '\1F4C5';
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
