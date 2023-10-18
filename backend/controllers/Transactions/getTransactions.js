@@ -23,6 +23,7 @@ export const getTransactions = async (req, res) => {
       dateFilter.date = { $gte: startOfWeekDate, $lte: endOfWeekDate }
       transactions = await Transaction.find(dateFilter).sort({ date: -1 })
     }
+
     res.json({ data: transactions })
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las transacciones' })

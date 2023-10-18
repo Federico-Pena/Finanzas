@@ -9,6 +9,7 @@ import { Transaccion } from '../../components/Transaccion/Transaccion'
 import { TransactionContext } from '../../Context/TransactionContext'
 import RangoFechas from '../../components/RangoFechas/RangoFechas'
 import { Graficos } from '../../components/Graficos/Graficos'
+import { Totales } from '../../components/Totales/Totales'
 
 const Dashboard = () => {
   const [form, setForm] = useState(false)
@@ -16,7 +17,6 @@ const Dashboard = () => {
   const { loading } = useFetchData(`/api/transactions`)
   const { mensaje, setMensaje } = useContext(MensajeContext)
   const { state } = useContext(TransactionContext)
-
   const actualizarEliminada = (res) => {
     const { error } = res
     if (error) {
@@ -30,6 +30,7 @@ const Dashboard = () => {
       {mensaje && <Toast mensaje={mensaje} setMensaje={setMensaje} />}
       <h2 className='titleDashboard'>Transacciones</h2>
       <RangoFechas />
+      <Totales />
       {loading ? (
         <Spinner />
       ) : (
@@ -43,35 +44,26 @@ const Dashboard = () => {
             </button>
           </div>
           {form && <FormularioTransaction cerrarForm={() => setForm(false)} />}
+
           <section>
             {graficos ? (
-              <>
-                <Graficos />
-              </>
-            ) : (
+              <Graficos />
+            ) : state.data.length > 0 ? (
               <ul className='listTransactions'>
                 <li className='elementTransactions top'>
-                  <header className='headerTransactions'>Descripción</header>
-                  <main className='mainTransaction'>Detalle</main>
-                  <footer className={`balance`}>
-                    <strong>Transacciones: {state.data.length}</strong>
-                    <strong className={state.total > 0 ? 'positivo' : 'negativo'}>
-                      Balance $ {state.total} {state.total > 0 ? '🤑' : '🥲'}
-                    </strong>
-                  </footer>
+                  <span className='headerTransactions'>Descripción</span>
+                  <span className='mainTransaction'>Detalle</span>
                 </li>
-                {state.data.length > 0 ? (
-                  state.data.map((transaction) => (
-                    <Transaccion
-                      actualizarEliminada={actualizarEliminada}
-                      key={transaction._id}
-                      transaction={transaction}
-                    />
-                  ))
-                ) : (
-                  <h2>No hay transacciones</h2>
-                )}
+                {state.data.map((transaction) => (
+                  <Transaccion
+                    actualizarEliminada={actualizarEliminada}
+                    key={transaction._id}
+                    transaction={transaction}
+                  />
+                ))}
               </ul>
+            ) : (
+              <h2>No hay transacciones en este rango de fechas</h2>
             )}
           </section>
         </article>

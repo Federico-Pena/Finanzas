@@ -55,6 +55,7 @@ const useFetchData = () => {
     }
     setLoading(false)
   }
+
   return { data, error, loading, postNota }
 }
 

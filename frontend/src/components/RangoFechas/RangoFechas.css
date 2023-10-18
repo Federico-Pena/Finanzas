@@ -17,17 +17,24 @@
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
-  height: 0;
+  height: 0px;
   overflow: hidden;
   transition: height 0.3s;
 }
+.divFechas p {
+  text-transform: capitalize;
+  display: flex;
+  justify-content: space-evenly;
+}
 .divFechas.open {
-  height: 150px;
+  height: 250px;
 }
 .label-fecha {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
+  flex: auto;
 }
 
 .inputFecha {

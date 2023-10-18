@@ -30,7 +30,7 @@ export const Transaccion = ({ transaction, actualizarEliminada }) => {
         <span>
           <Flecha />
         </span>
-        <button onClick={handleDelete}>eliminar</button>
+        <button onClick={handleDelete}>Eliminar</button>
       </main>
       <footer className='footerTransaction'>
         <span>Ingresada {formatFechaParaUser(transaction.date.split('T')[0])}</span>

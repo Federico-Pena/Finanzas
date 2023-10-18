@@ -1,11 +1,11 @@
 import { createContext, useEffect, useReducer } from 'react'
 import useFetchData from '../Hooks/Fetch/useFetchData'
 import { ACTIONS } from '../../constantes'
-import { transactionReducer } from './TransactionReducer'
+import { transactionReducer } from './transactionReducer'
 
 const initialValues = {
   data: [],
-  total: 0
+  totales: {}
 }
 export const TransactionContext = createContext()
 

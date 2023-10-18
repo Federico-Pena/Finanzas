@@ -12,21 +12,19 @@ const funciones = {
 }
 export const transactionReducer = (state, action) => {
   const { type, payload } = action
+
   switch (type) {
     case ACTIONS.ADD:
-      return { ...state, data: payload, total: calculateTotal(payload) }
+      return { ...state, data: payload, totales: calculateTotal(payload) }
+
     case ACTIONS.UPDATE:
-      return {
-        ...state,
-        data: funciones.update(state.data, payload),
-        total: calculateTotal(funciones.update(state.data, payload))
-      }
+      const updatedData = funciones.update(state.data, payload)
+      return { ...state, data: updatedData, totales: calculateTotal(updatedData) }
+
     case ACTIONS.DELETE:
-      return {
-        ...state,
-        data: funciones.delete(state.data, payload),
-        total: calculateTotal(funciones.delete(state.data, payload))
-      }
+      const deletedData = funciones.delete(state.data, payload)
+      return { ...state, data: deletedData, totales: calculateTotal(deletedData) }
+
     default:
       return { ...state }
   }

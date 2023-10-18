@@ -42,26 +42,20 @@ export const Graficos = () => {
     return result
   }, {})
 
-  const datosGrafico = Object.values(diasAgrupados).sort((a, b) => (b.fecha < a.fecha ? 1 : -1))
+  const datosGrafico = Object.values(diasAgrupados).reverse()
 
-  return (
-    <>
-      <h4 className={`balance`}>
-        <strong>Transacciones: {state.data.length}</strong>
-        <strong className={state.total > 0 ? 'positivo' : 'negativo'}>
-          {`Balance $ ${state.total} ${state.total > 0 ? '🤑' : '🥲'}`}
-        </strong>
-      </h4>
-      <ResponsiveContainer width='100%' height={350}>
-        <LineChart data={datosGrafico} margin={{ top: 20, right: 20 }}>
-          <XAxis dataKey='fecha' />
-          <YAxis />
-          <CartesianGrid strokeDasharray='3 3' />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Line type='bump' dataKey='Monto' stroke='#8884d8' />
-        </LineChart>
-      </ResponsiveContainer>
-    </>
+  return state.data.length > 0 ? (
+    <ResponsiveContainer width='100%' height={350}>
+      <LineChart data={datosGrafico} margin={{ top: 20, right: 20 }}>
+        <XAxis dataKey='fecha' />
+        <YAxis />
+        <CartesianGrid strokeDasharray='3 3' />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend />
+        <Line type='bump' dataKey='Monto' stroke='#8884d8' />
+      </LineChart>
+    </ResponsiveContainer>
+  ) : (
+    <h2>No hay transacciones en este rango de fechas</h2>
   )
 }

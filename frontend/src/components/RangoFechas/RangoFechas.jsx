@@ -4,14 +4,16 @@ import { formatFechaParaUser } from '../../helpers/formatFechaParaUser'
 import { UserContext } from '../../Context/UserContext'
 import { ACTIONS, baseUrl } from '../../../constantes'
 import { TransactionContext } from '../../Context/TransactionContext'
+import { semanaActual } from '../../helpers/semanaActual'
+import { MensajeContext } from '../../Context/MensajeContext'
 
 const RangoFechas = () => {
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
-  const [visible, setVisible] = useState(false)
-  const { user } = useContext(UserContext)
   const { dispatch } = useContext(TransactionContext)
-
+  const [startDate, setStartDate] = useState(semanaActual().inicio)
+  const [endDate, setEndDate] = useState(semanaActual().fin)
+  const [visible, setVisible] = useState(true)
+  const { user } = useContext(UserContext)
+  const { setMensaje } = useContext(MensajeContext)
   const handleDateChange = (date) => {
     if (!startDate || (startDate && endDate)) {
       setStartDate(date)
@@ -34,26 +36,30 @@ const RangoFechas = () => {
         `${baseUrl}/api/transactions?startDate=${startDate} 00:00:00&endDate=${endDate} 00:00:00`,
         options
       )
-      const data = await response.json()
-      dispatch({ type: ACTIONS.ADD, payload: data.data })
+      const { data, error } = await response.json()
+      if (data) {
+        dispatch({ type: ACTIONS.ADD, payload: data })
+      }
+      if (error) {
+        setMensaje(error)
+      }
     } catch (error) {
-      console.error('Error al obtener las transacciones', error)
+      setMensaje('Error al obtener las transacciones')
     }
   }
-
   return (
     <section className='date-range-picker'>
       <button
+        type='button'
+        title={visible ? 'Cerrar' : 'Filtrar'}
         onClick={() => {
           setVisible(!visible)
-          setEndDate('')
-          setStartDate('')
         }}>
         {visible ? 'Cerrar' : 'Filtrar'}
       </button>
       <div className={`divFechas ${visible ? 'open' : ''}`}>
         <label className='label-fecha'>
-          Selecciona la fecha {startDate ? 'de fin' : 'de inicio'}
+          Selecciona la fecha {startDate && !endDate ? 'de fin' : 'de inicio'}
           <input
             className='inputFecha'
             type='date'
@@ -61,19 +67,19 @@ const RangoFechas = () => {
           />
         </label>
         <p>
-          Rango seleccionado: {!startDate && !endDate && 'Esta Semana'}{' '}
+          Rango seleccionado: {!startDate && !endDate && 'Semana actual'}{' '}
           <strong>{startDate && formatFechaParaUser(startDate)}</strong> {startDate && 'al'}{' '}
           <strong>{endDate && formatFechaParaUser(endDate)}</strong>
         </p>
+        {startDate && endDate && (
+          <button
+            onClick={() => getDataDate(startDate, endDate)}
+            type='button'
+            title='Buscar transacciones'>
+            Buscar
+          </button>
+        )}
       </div>
-      {startDate && endDate && (
-        <button
-          onClick={() => getDataDate(startDate, endDate)}
-          type='button'
-          title='Buscar transacciones'>
-          Buscar
-        </button>
-      )}
     </section>
   )
 }
