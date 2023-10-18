@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 4000
 
 const app = express()
 const optionsCors = {
-  origin: ['http://localhost:5173'],
+  origin: ['https://tus-finanzas.vercel.app', 'http://localhost:5173'],
   methods: ['GET', 'PUT', 'POST', 'DELETE']
 }
 app.disable('x-powered-by')

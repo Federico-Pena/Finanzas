@@ -1,5 +1,5 @@
 export const baseUrl = import.meta.env.PROD
-  ? 'https://lista-tareas-app.vercel.app'
+  ? 'https://tus-finanzas.vercel.app'
   : 'http://localhost:4000'
 export const ACTIONS = {
   ADD: 'ADD',
