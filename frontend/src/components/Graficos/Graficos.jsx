@@ -17,10 +17,8 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className={`custom-tooltip ${payload[0].value > 0 ? 'ingreso' : 'gasto'}`}>
-        <p className='desc'>{`Descripción: ${payload[0].payload.descipcion}`}</p>
         <p className='label'>{`Fecha: ${label}`}</p>
-        <p className={`desc `}>{`Monto: $ ${payload[0].value}`}</p>
-        <p className='desc'>{`Tipo: ${payload[0].payload.tipo}`}</p>
+        <p className={`desc `}>{`Balance: $ ${payload[0].value}`}</p>
       </div>
     )
   }
@@ -29,18 +27,22 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 export const Graficos = () => {
   const { state } = useContext(TransactionContext)
-  const datosGrafico = state.data
-    .sort((a, b) => (b.date < a.date ? 1 : -1))
-    .map((transaccion) => {
-      const fecha = formatFechaParaUser(transaccion.date.split('T')[0])
-      const Monto = transaccion.type === 'ingreso' ? transaccion.amount : transaccion.amount * -1
-      return {
-        descipcion: transaccion.description,
+  const diasAgrupados = state.data.reduce((result, transaccion) => {
+    const fecha = formatFechaParaUser(transaccion.date.split('T')[0])
+    if (result[fecha]) {
+      result[fecha].Monto +=
+        transaccion.type === 'ingreso' ? transaccion.amount : transaccion.amount * -1
+    } else {
+      result[fecha] = {
         fecha,
-        Monto,
-        tipo: transaccion.type
+        Monto: transaccion.type === 'ingreso' ? transaccion.amount : transaccion.amount * -1
       }
-    })
+    }
+
+    return result
+  }, {})
+
+  const datosGrafico = Object.values(diasAgrupados).sort((a, b) => (b.fecha < a.fecha ? 1 : -1))
 
   return (
     <>
@@ -57,7 +59,7 @@ export const Graficos = () => {
           <CartesianGrid strokeDasharray='3 3' />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          <Line type='step' dataKey='Monto' stroke='#8884d8' />
+          <Line type='bump' dataKey='Monto' stroke='#8884d8' />
         </LineChart>
       </ResponsiveContainer>
     </>
