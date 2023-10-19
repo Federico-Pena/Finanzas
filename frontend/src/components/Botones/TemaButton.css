@@ -1,38 +1,20 @@
-.btnColorTema {
-  position: relative;
-  width: 100%;
-  display: flex;
-}
-.btnColorTema .btnTema {
-  position: absolute;
-  top: 0;
-  right: 0.5rem;
-  width: 40px;
-  height: 20px;
-  border: none;
-  border-radius: 20px;
+.btnTema {
+  width: 30px;
+  height: 30px;
+  border-radius: 10rem;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btnColorTema .btnTema span {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: #fff;
-  border-radius: 50%;
-  top: 0;
-  left: 0;
-  transition: transform 0.3s;
+  transition: box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  left: 100%;
+  top: 1rem;
 }
 
 .btnTema.isDark {
-  background-color: yellow;
+  box-shadow: inset 0px 0px 5px 15px #fff;
 }
 .btnTema.isLight {
-  background-color: #333;
-  outline-color: rgb(0, 136, 255);
-}
-.isDark span {
-  transform: translateX(100%);
+  box-shadow: inset 0px 0px 5px 5px #333;
 }

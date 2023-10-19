@@ -33,6 +33,7 @@ body.dark {
 }
 main {
   padding: 1rem;
+  display: grid;
 }
 
 button {
@@ -62,6 +63,12 @@ form,
   border: 1px solid var(--text-color);
 }
 
+body.dark .auth-dialog {
+  background-color: var(--bg-color);
+}
+body.light .auth-dialog {
+  background-color: var(--bg-color);
+}
 body.dark button:hover {
   background-color: var(--text-color);
   transform: scale(0.99);

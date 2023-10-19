@@ -10,6 +10,9 @@ export const UserProvider = ({ children }) => {
   const [theme, setTheme] = useState('dark')
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem('token'))
+    const tema = localStorage.getItem('theme')
+    console.log(tema)
+    setTheme(tema || 'dark')
     if (data) {
       setUser(data)
     }
@@ -43,7 +46,9 @@ export const UserProvider = ({ children }) => {
   }
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'))
+    const tema = theme === 'light' ? 'dark' : 'light'
+    localStorage.setItem('theme', tema)
+    setTheme(tema)
   }
   return (
     <UserContext.Provider value={{ user, loginUser, logoutUser, deleteUser, toggleTheme, theme }}>

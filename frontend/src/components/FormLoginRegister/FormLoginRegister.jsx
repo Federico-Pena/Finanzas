@@ -5,29 +5,28 @@ import { UserContext } from '../../Context/UserContext'
 import { MensajeContext } from '../../Context/MensajeContext'
 import { Toast } from '../Toast/Toast'
 import { baseUrl } from '../../../constantes'
-
+const initialValues = {
+  username: '',
+  password: ''
+}
+const validationRules = {
+  username: {
+    required: true,
+    pattern: /^(?=.*[A-Za-z])[A-Za-z\d]{4,}$/,
+    message: 'El nombre de usuario debe contener al menos 4 caracteres'
+  },
+  password: {
+    required: true,
+    pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    message: 'La contraseña debe contener al menos 8 caracteres, una letra y un número'
+  }
+}
 export const FormLoginRegister = () => {
   const { loginUser } = useContext(UserContext)
   const { mensaje, setMensaje } = useContext(MensajeContext)
   const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false)
-  const initialValues = {
-    username: '',
-    password: ''
-  }
 
-  const validationRules = {
-    username: {
-      required: true,
-      pattern: /^(?=.*[A-Za-z])[A-Za-z\d]{4,}$/,
-      message: 'El nombre de usuario debe contener al menos 4 caracteres'
-    },
-    password: {
-      required: true,
-      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-      message: 'La contraseña debe contener al menos 8 caracteres, una letra y un número'
-    }
-  }
   const { values, errors, validateForm, handleChange, resetForm } = useForm(
     initialValues,
     validationRules

@@ -24,8 +24,11 @@
 .divFechas p {
   text-transform: capitalize;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
+  gap: 1rem;
 }
+
 .divFechas.open {
   height: 250px;
 }
@@ -43,6 +46,7 @@
   background-color: transparent;
   position: relative;
   outline: none;
+  width: 100%;
 }
 .inputFecha::-webkit-calendar-picker-indicator {
   position: absolute;

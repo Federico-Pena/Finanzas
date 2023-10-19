@@ -67,13 +67,15 @@ const RangoFechas = () => {
           />
         </label>
         <p>
-          Rango seleccionado: {!startDate && !endDate && 'Semana actual'}{' '}
           <strong>{startDate && formatFechaParaUser(startDate)}</strong> {startDate && 'al'}{' '}
           <strong>{endDate && formatFechaParaUser(endDate)}</strong>
         </p>
         {startDate && endDate && (
           <button
-            onClick={() => getDataDate(startDate, endDate)}
+            onClick={() => {
+              setVisible(false)
+              getDataDate(startDate, endDate)
+            }}
             type='button'
             title='Buscar transacciones'>
             Buscar

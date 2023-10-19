@@ -55,8 +55,9 @@ h2 {
   animation-range: entry 0% 10%;
 }
 .elementTransactions.top {
+  animation: none;
   position: sticky;
-  top: 1rem;
+  top: 0rem;
   z-index: 2;
   backdrop-filter: blur(15px);
 }

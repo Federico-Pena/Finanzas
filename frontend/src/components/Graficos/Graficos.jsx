@@ -22,31 +22,41 @@ const CustomTooltip = ({ active, payload, label }) => {
       </div>
     )
   }
-
   return null
+}
+
+function getDaysBetweenDates(startDate, endDate) {
+  const days = []
+  let currentDate = startDate
+  while (currentDate <= endDate) {
+    days.push(new Date(currentDate))
+    currentDate.setDate(currentDate.getDate() + 1)
+  }
+  return days
 }
 export const Graficos = () => {
   const { state } = useContext(TransactionContext)
-  const diasAgrupados = state.data.reduce((result, transaccion) => {
-    const fecha = formatFechaParaUser(transaccion.date.split('T')[0])
-    if (result[fecha]) {
-      result[fecha].Monto +=
-        transaccion.type === 'ingreso' ? transaccion.amount : transaccion.amount * -1
-    } else {
-      result[fecha] = {
-        fecha,
-        Monto: transaccion.type === 'ingreso' ? transaccion.amount : transaccion.amount * -1
-      }
-    }
+  const { data } = state
+  const primerFecha = `${data[data.length - 1].date.toString().split('T')[0]} 00:00:00`
+  const ultimaFecha = `${data[0].date.toString().split('T')[0]} 00:00:00`
+  const primerDia = new Date(primerFecha)
+  const ultimoDia = new Date(ultimaFecha)
+  const diasGrafico = getDaysBetweenDates(primerDia, ultimoDia)
 
-    return result
-  }, {})
-
-  const datosGrafico = Object.values(diasAgrupados).reverse()
+  const balanceData = diasGrafico.map((date) => {
+    const formattedDate = formatFechaParaUser(date.toISOString().split('T')[0])
+    const transactionsUntilDate = state.data.filter(
+      (trans) => new Date(`${trans.date.toString().split('T')[0]} 00:00:00`) <= date
+    )
+    const totalBalance = transactionsUntilDate.reduce((acc, trans) => {
+      return acc + (trans.type === 'ingreso' ? trans.amount : -trans.amount)
+    }, 0)
+    return { fecha: formattedDate, Monto: totalBalance }
+  })
 
   return state.data.length > 0 ? (
     <ResponsiveContainer width='100%' height={350}>
-      <LineChart data={datosGrafico} margin={{ top: 20, right: 20 }}>
+      <LineChart data={balanceData} margin={{ top: 20, right: 20 }}>
         <XAxis dataKey='fecha' />
         <YAxis />
         <CartesianGrid strokeDasharray='3 3' />
